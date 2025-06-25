@@ -512,7 +512,7 @@ const Home = () => {
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                maxLength={15}
+         
               />
             </motion.div>
 
