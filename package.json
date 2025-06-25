@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "^4.17.3",
     "framer-motion": "^6.3.3",
+    "lucide-react": "^0.523.0",
     "next": "latest",
     "react": "^17.0.2",
     "react-colorful": "^5.5.1",

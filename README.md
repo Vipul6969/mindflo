@@ -19,5 +19,5 @@ Real-time whiteboard made with Next.JS and Socket.IO
 - TailwindCSS
 - Framer Motion
 - Socket.IO
-## Demo
+
 
