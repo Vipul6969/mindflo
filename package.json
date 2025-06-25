@@ -1,5 +1,5 @@
 {
-  "name": "collabio",
+  "name": "MindFlo.ai",
   "private": true,
   "scripts": {
     "dev": "nodemon server/index.ts",
