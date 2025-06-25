@@ -284,7 +284,7 @@ const Home = () => {
   };
 
   const handleJoinRoom = () => {
-    setClicked(true);
+
     if (roomId) socket.emit("join_room", roomId, username);
   };
 
@@ -545,7 +545,7 @@ const Home = () => {
                 {/* Join Workspace */}
                 <button
                   onClick={() => {
-                    handleJoinRoom();
+                   setClicked(true);
                   }}
                   className="relative z-10 flex flex-1 items-center justify-center rounded-2xl py-4 px-6 text-sm font-bold transition-all duration-300"
                 >
@@ -567,28 +567,26 @@ const Home = () => {
                   <label className="mb-2 block font-bold text-white">
                     Workspace ID
                   </label>
-
-                  <input
-                    className="w-full rounded-2xl border border-white/30 bg-gradient-to-r from-white/5 to-white/10 px-6 py-5 pr-14 text-lg font-medium placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    value={roomId}
-                    onChange={(e) => setRoomId(e.target.value)}
-                    placeholder="Enter workspace ID"
-                  />
-
-                  {/* Icon Button (redirect trigger) */}
-                  {roomId.trim() && !isLoading && (
+                  <div className="relative flex items-center">
+                    <input
+                      className="w-full rounded-2xl border border-white/30 bg-gradient-to-r from-white/5 to-white/10 px-6 py-5 pr-14 text-lg font-medium placeholder-gray-400 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      value={roomId}
+                      onChange={(e) => setRoomId(e.target.value)}
+                      placeholder="Enter workspace ID"
+                    />
                     <button
                       type="button"
                       onClick={() => {
-                       
                         setIsLoading(true);
                         handleJoinRoom();
                       }}
                       className="absolute top-1/2 right-4 -translate-y-1/2 text-cyan-400 transition-all hover:text-cyan-300"
                     >
-                      <ArrowRightCircle className="h-6 w-6" />
+                      <ArrowRightCircle className=" align-middle" />
                     </button>
-                  )}
+                  </div>
+
+                  {/* Icon Button (redirect trigger) */}
                 </div>
               </motion.div>
             )}
