@@ -8,6 +8,8 @@ import { RecoilRoot } from 'recoil';
 import { DEFAULT_EASE } from '@/common/constants/easings';
 import { ModalManager } from '@/modules/modal';
 
+import { SocketProvider } from '../socket/socketContext';
+
 import 'react-toastify/dist/ReactToastify.min.css';
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -21,7 +23,9 @@ const App = ({ Component, pageProps }: AppProps) => {
         <ToastContainer />
         <MotionConfig transition={{ ease: DEFAULT_EASE }}>
           <ModalManager />
-          <Component {...pageProps} />
+          <SocketProvider>
+            <Component {...pageProps} />
+          </SocketProvider>
         </MotionConfig>
       </RecoilRoot>
     </>

@@ -9,8 +9,8 @@ import { useSetSavedMoves } from '@/common/recoil/savedMoves';
 import { Move } from '@/common/types/global';
 
 import { useCtx } from '../modules/board/hooks/useCtx';
-import { useRefs } from './useRefs';
 import { useSelection } from '../modules/board/hooks/useSelection';
+import { useRefs } from './useRefs';
 
 let prevMovesLength = 0;
 
@@ -30,7 +30,7 @@ export const useMovesHandlers = (clearOnYourMove: () => void) => {
 
     usersMoves.forEach((userMoves) => moves.push(...userMoves));
 
-    moves.sort((a, b) => a.timestamp - b.timestamp);
+    moves.sort((a, b) => (a.timestamp ?? 0) - (b.timestamp ?? 0));
 
     return moves;
   }, [room]);
@@ -64,7 +64,7 @@ export const useMovesHandlers = (clearOnYourMove: () => void) => {
   const drawMove = (move: Move, image?: HTMLImageElement) => {
     const { path } = move;
 
-    if (!ctx || !path.length) return;
+    if (!ctx || !path || !path.length) return;
 
     const moveOptions = move.options;
 
@@ -93,26 +93,30 @@ export const useMovesHandlers = (clearOnYourMove: () => void) => {
       }
 
       case 'circle': {
-        const { cX, cY, radiusX, radiusY } = move.circle;
+        if (move.circle) {
+          const { cX, cY, radiusX, radiusY } = move.circle;
 
-        ctx.beginPath();
-        ctx.ellipse(cX, cY, radiusX, radiusY, 0, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-        ctx.closePath();
+          ctx.beginPath();
+          ctx.ellipse(cX, cY, radiusX, radiusY, 0, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fill();
+          ctx.closePath();
+        }
         break;
       }
 
       case 'rect': {
-        const { width, height } = move.rect;
+        if (move.rect) {
+          const { width, height } = move.rect;
 
-        ctx.beginPath();
+          ctx.beginPath();
 
-        ctx.rect(path[0][0], path[0][1], width, height);
-        ctx.stroke();
-        ctx.fill();
+          ctx.rect(path[0][0], path[0][1], width, height);
+          ctx.stroke();
+          ctx.fill();
 
-        ctx.closePath();
+          ctx.closePath();
+        }
         break;
       }
 
@@ -133,10 +137,12 @@ export const useMovesHandlers = (clearOnYourMove: () => void) => {
         .filter((move) => move.options.shape === 'image')
         .map((move) => {
           return new Promise<HTMLImageElement>((resolve) => {
-            const img = new Image();
-            img.src = move.img.base64;
-            img.id = move.id;
-            img.addEventListener('load', () => resolve(img));
+            if (move.img && move.img.base64) {
+              const img = new Image();
+              img.src = move.img.base64;
+              img.id = move.id ?? '';
+              img.addEventListener('load', () => resolve(img));
+            }
           });
         })
     );
@@ -171,7 +177,11 @@ export const useMovesHandlers = (clearOnYourMove: () => void) => {
     } else {
       const lastMove = sortedMoves[sortedMoves.length - 1];
 
-      if (lastMove.options.shape === 'image') {
+      if (
+        lastMove.options.shape === 'image' &&
+        lastMove.img &&
+        lastMove.img.base64
+      ) {
         const img = new Image();
         img.src = lastMove.img.base64;
         img.addEventListener('load', () => drawMove(lastMove, img));

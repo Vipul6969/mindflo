@@ -51,7 +51,11 @@ const NameInput = () => {
   const handleJoinRoom = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    socket.emit('join_room', roomId, name);
+    socket.emit('join_room', {
+      boardId: roomId,
+      username: name,
+      userId: '',
+    });
   };
 
   return (

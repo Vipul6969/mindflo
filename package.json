@@ -2,12 +2,12 @@
   "name": "MindFlo.ai",
   "private": true,
   "scripts": {
-    "dev": "nodemon server/index.ts",
-    "dev:client": "ts-node server/index.ts",
+    "dev": "nodemon socket/socket.ts",
+    "dev:client": "ts-node socket/socket.ts",
     "build:server": "tsc --project tsconfig.server.json",
     "build:next": "next build",
     "build": "npm-run-all build:*",
-    "start": "NODE_ENV=production node build/server/index.js",
+    "start": "NODE_ENV=production node build/socket/socket.ts",
     "lint": "next lint"
   },
   "dependencies": {

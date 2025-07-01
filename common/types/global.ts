@@ -18,30 +18,41 @@ export interface CtxOptions {
 }
 
 export interface Move {
-  circle: {
+  // For freehand/line drawing
+  path?: [number, number][];
+
+  // For circle shape
+  circle?: {
     cX: number;
     cY: number;
     radiusX: number;
     radiusY: number;
   };
-  rect: {
+
+  // For rectangle shape
+  rect?: {
     width: number;
     height: number;
   };
-  img: {
+
+  // For images
+  img?: {
     base64: string;
   };
-  path: [number, number][];
+
+  // Common drawing settings
   options: CtxOptions;
-  timestamp: number;
-  id: string;
+
+  // Metadata
+  timestamp?: number;
+  id?: string;
 }
 
-export type Room = {
+export interface Room {
   usersMoves: Map<string, Move[]>;
   drawed: Move[];
   users: Map<string, string>;
-};
+}
 
 export interface User {
   name: string;
@@ -71,7 +82,7 @@ export interface ServerToClientEvents {
   created: (roomId: string) => void;
   your_move: (move: Move) => void;
   user_draw: (move: Move, userId: string) => void;
-  user_undo(userId: string): void;
+  user_undo: (userId: string) => void;
   mouse_moved: (x: number, y: number, userId: string) => void;
   new_user: (userId: string, username: string) => void;
   user_disconnected: (userId: string) => void;
@@ -80,12 +91,16 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   check_room: (roomId: string) => void;
-  draw: (move: Move) => void;
-  mouse_move: (x: number, y: number) => void;
-  undo: () => void;
   create_room: (username: string) => void;
-  join_room: (room: string, username: string) => void;
+  join_room: (data: {
+    boardId: string;
+    userId: string;
+    username: string;
+  }) => void;
   joined_room: () => void;
-  leave_room: () => void;
+  draw: (move: Move) => void;
+  undo: () => void;
+  mouse_move: (x: number, y: number) => void;
   send_msg: (msg: string) => void;
+  leave_room: () => void;
 }
